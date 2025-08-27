@@ -8,7 +8,7 @@ def rpc():
     # Parse raw JSON
     req = json.loads(request.data.decode())
 
-    # Minimal "hello" implementation
+    
     if req.get("method") == "hello":
         name = req.get("params", {}).get("name", "World")
         result = f"Hello, {name}!"

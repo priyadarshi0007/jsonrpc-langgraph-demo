@@ -1,3 +1,4 @@
+# here we need to start all three servers in 3 different terminals.
 # graph_runner.py
 from typing import TypedDict, Any, Dict
 from langgraph.graph import StateGraph, END
