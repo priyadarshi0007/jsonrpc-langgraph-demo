@@ -21,9 +21,7 @@ and orchestrate them with [LangGraph](https://github.com/langchain-ai/langgraph)
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-
-Here’s the same blog, rewritten cleanly in GitHub-flavored Markdown (GFM) so you can drop it straight into a README.md or publish it as a post in your repo.
-
+```
 ⸻
 
 Building JSON-RPC Microservices and Orchestrating Them with LangGraph
