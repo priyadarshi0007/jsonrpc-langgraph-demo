@@ -36,7 +36,7 @@ In this post, we will build three JSON-RPC microservices in Python without any e
 
 ## Why JSON-RPC?
 
-JSON-RPC has a few clear benefits:
+JSON-RPC has a few clear benefits:\n
 	•	Minimal overhead compared to REST.
 	•	Standardized request and response formats.
 	•	Easy to implement manually with just Flask and json.
