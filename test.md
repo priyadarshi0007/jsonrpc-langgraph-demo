@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     autonumber
     participant G as LangGraph (graph_runner)
@@ -45,3 +46,4 @@ sequenceDiagram
     M-->>C: 200 OK
     Note left of M: Body\n{"jsonrpc":"2.0","error":{"code":-32602,"message":"Invalid params: a and b required"},"id":4}
     end
+```
