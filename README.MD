@@ -32,9 +32,9 @@ When designing microservices for data engineering or agentic AI systems, communi
 
 In this post, we will build three JSON-RPC microservices in Python without any external JSON-RPC libraries. Then we will write a simple client to interact with them, and finally orchestrate them using LangGraph to demonstrate fan-out, parallel execution, and aggregation of results.
 
-⸻
 
-Why JSON-RPC?
+
+## Why JSON-RPC?
 
 JSON-RPC has a few clear benefits:
 	•	Minimal overhead compared to REST.
@@ -42,8 +42,8 @@ JSON-RPC has a few clear benefits:
 	•	Easy to implement manually with just Flask and json.
 	•	Native support for batch calls.
 
-Typical JSON-RPC request:
-
+### Typical JSON-RPC request:
+```
 {
   "jsonrpc": "2.0",
   "method": "hello",
@@ -51,18 +51,16 @@ Typical JSON-RPC request:
   "id": 1
 }
 
-Typical response:
+### Typical response:
 
 {
   "jsonrpc": "2.0",
   "result": "Hello, World!",
   "id": 1
 }
+```
 
-
-⸻
-
-Designing the Microservices
+# Designing the Microservices
 
 We will implement three independent services:
 	1.	Hello Service – greets the user.
@@ -72,7 +70,7 @@ We will implement three independent services:
 All services are Flask applications that parse JSON requests and return JSON-RPC compliant responses.
 
 Hello Service (server_hello.py)
-
+```
 from flask import Flask, request, Response
 import json
 
@@ -91,9 +89,10 @@ def rpc():
 
 if __name__ == "__main__":
     app.run(port=5001)
+```
 
 Math Service (server_math.py)
-
+```
 from flask import Flask, request, Response
 import json
 
@@ -116,9 +115,10 @@ def rpc():
 
 if __name__ == "__main__":
     app.run(port=5002)
+```
 
 Time Service (server_time.py)
-
+```
 from flask import Flask, request, Response
 import json, datetime
 
@@ -137,13 +137,12 @@ def rpc():
 if __name__ == "__main__":
     app.run(port=5003)
 
+```
 
-⸻
-
-Writing a Simple Client
+## Writing a Simple Client
 
 The client just sends JSON payloads to each service and prints responses.
-
+```
 # rpc_client.py
 import requests, json
 
@@ -170,11 +169,9 @@ Running this produces:
 {"jsonrpc":"2.0","result":12,"id":1}
 {"jsonrpc":"2.0","result":42,"id":1}
 {"jsonrpc":"2.0","result":{"utc_iso":"2025-08-26T05:10:12Z"},"id":1}
+```
 
-
-⸻
-
-Orchestrating with LangGraph
+## Orchestrating with LangGraph
 
 LangGraph provides a stateful DAG execution engine for AI agents and workflows. We can map our JSON-RPC services as nodes in a graph:
 	•	start → hello
@@ -185,7 +182,7 @@ LangGraph provides a stateful DAG execution engine for AI agents and workflows. 
 This demonstrates fan-out parallelism and aggregation of results.
 
 Graph Runner (graph_runner.py)
-
+```
 from typing import TypedDict, Any, Dict
 from langgraph.graph import StateGraph, END
 from rpc_client import rpc_call
@@ -240,8 +237,8 @@ if __name__ == "__main__":
     app = build()
     result = app.invoke({"name": "Pri"})
     print(result)
-
-Expected output:
+```
+### Expected output:
 
 {
   'name': 'Pri',
@@ -251,27 +248,20 @@ Expected output:
 }
 
 
-⸻
 
-Lessons Learned
+### Lessons Learned
 	1.	JSON-RPC is lightweight and easy to implement manually, making it suitable for fast prototyping.
 	2.	Error handling is essential. JSON-RPC defines standard error codes for parse errors, invalid parameters, and method not found.
 	3.	LangGraph enables orchestration of independent services, allowing parallel execution and aggregation in a clean DAG representation.
 	4.	This approach can scale into larger agentic AI or data engineering workflows where services are small and composable.
 
-⸻
-
-Next Steps
+### Next Steps
 	•	Extend the Math service to include subtraction, division, and batch processing.
 	•	Add error handling with JSON-RPC error objects (codes -32600 to -32603).
 	•	Replace Flask with FastAPI for async support and better performance.
 	•	Use LangGraph conditions and routers to dynamically select which service to call.
 
-⸻
-
 Conclusion
 
 This project demonstrates how to combine the simplicity of JSON-RPC with the orchestration capabilities of LangGraph. By building independent microservices and wiring them into a graph-based execution model, we get a flexible, testable, and composable system that is directly applicable to real-world data engineering and AI workflows.
-
-⸻
 
