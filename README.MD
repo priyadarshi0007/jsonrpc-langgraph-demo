@@ -235,7 +235,7 @@ def build():
 
 if __name__ == "__main__":
     app = build()
-    result = app.invoke({"name": "Pri"})
+    result = app.invoke({"name": "PSK"})
     print(result)
 ```
 ### Expected output:
